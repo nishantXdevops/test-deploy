@@ -1,0 +1,1596 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Divya & Nishant 💖 | Hamari Story & Love Notes</title>
+  <meta name="description" content="A romantic Hinglish digital sanctuary created by Nishant exclusively for Divya with love notes, interactive memories, 'Open When' letters, and a shared Bollywood music playlist." />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            pitch: '#050507',
+            darkcard: '#111116',
+            darksurface: '#17171f',
+            rosegold: {
+              300: '#f6d5b8',
+              400: '#e0a96d',
+              500: '#d48c46',
+            },
+            crimson: {
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+            }
+          },
+          fontFamily: {
+            serif: ['Playfair Display', 'Cormorant Garamond', 'serif'],
+            sans: ['Plus Jakarta Sans', 'sans-serif'],
+            handwritten: ['Dancing Script', 'Caveat', 'cursive'],
+          },
+          boxShadow: {
+            'glow-rose': '0 0 30px -5px rgba(244, 63, 94, 0.25)',
+            'glow-gold': '0 0 30px -5px rgba(224, 169, 109, 0.25)',
+            'glow-subtle': '0 10px 40px -10px rgba(0, 0, 0, 0.8)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS for 3D Perspective Flip Cards & Animations -->
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050507;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #272732;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #f43f5e;
+    }
+
+    /* Particle Canvas Background */
+    #particleCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 3D Flip Card Scene & Card */
+    .flip-card-scene {
+      perspective: 1200px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transform-style: preserve-3d;
+    }
+
+    .flip-card-scene.is-flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 1rem;
+      top: 0;
+      left: 0;
+    }
+
+    .flip-card-front {
+      z-index: 2;
+    }
+
+    .flip-card-back {
+      transform: rotateY(180deg);
+      z-index: 1;
+    }
+
+    /* Glassmorphism utility */
+    .glass-card {
+      background: rgba(17, 17, 22, 0.75);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .glass-card-hover {
+      transition: all 0.3s ease;
+    }
+    .glass-card-hover:hover {
+      border-color: rgba(244, 63, 94, 0.3);
+      box-shadow: 0 0 25px -5px rgba(244, 63, 94, 0.2);
+      transform: translateY(-4px);
+    }
+
+    /* Shimmer effect for wax seals & envelopes */
+    @keyframes shimmer {
+      0% { transform: translateX(-100%) rotate(45deg); }
+      100% { transform: translateX(200%) rotate(45deg); }
+    }
+    .shimmer-effect {
+      position: relative;
+      overflow: hidden;
+    }
+    .shimmer-effect::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.08),
+        transparent
+      );
+      transform: rotate(45deg);
+      animation: shimmer 4s infinite ease-in-out;
+    }
+
+    /* Modal Animation */
+    dialog[open] {
+      animation: modalFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      animation: backdropFadeIn 0.3s ease forwards;
+    }
+
+    @keyframes modalFadeIn {
+      from {
+        opacity: 0;
+        transform: scale(0.92) translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+    @keyframes backdropFadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Equalizer visualizer animation */
+    .equalizer-bar {
+      animation: bounce 1.2s ease-in-out infinite alternate;
+    }
+    .equalizer-bar:nth-child(2) { animation-delay: 0.2s; }
+    .equalizer-bar:nth-child(3) { animation-delay: 0.4s; }
+    .equalizer-bar:nth-child(4) { animation-delay: 0.1s; }
+    @keyframes bounce {
+      0% { height: 4px; }
+      100% { height: 20px; }
+    }
+
+    /* Spinning Vinyl Animation */
+    @keyframes spinVinyl {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .spin-vinyl {
+      animation: spinVinyl 8s linear infinite;
+    }
+  </style>
+</head>
+
+<body class="bg-pitch text-zinc-200 font-sans selection:bg-rose-500 selection:text-white relative min-h-screen overflow-x-hidden">
+
+  <!-- Interactive Floating Background Canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <!-- Ambient Glow Spots -->
+  <div class="fixed top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose-600/10 rounded-full blur-[140px] pointer-events-none z-0"></div>
+  <div class="fixed bottom-10 right-10 w-[450px] h-[450px] bg-amber-600/10 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-pitch/70 border-b border-white/10 transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo / Monogram -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-full bg-gradient-to-tr from-rose-500/20 to-amber-500/20 border border-rose-500/30 flex items-center justify-center group-hover:border-rose-400 group-hover:shadow-[0_0_15px_rgba(244,63,94,0.4)] transition-all">
+          <i class="fa-solid fa-heart text-rose-400 text-sm group-hover:scale-110 transition-transform"></i>
+        </div>
+        <span class="font-serif text-xl sm:text-2xl font-bold bg-gradient-to-r from-rose-200 via-rose-100 to-rosegold-300 bg-clip-text text-transparent">
+          Divya & Nishant <span class="text-rose-500 text-sm italic font-sans font-normal ml-1 hidden sm:inline">| From Nishant With Love 💖</span>
+        </span>
+      </a>
+
+      <!-- Desktop Links -->
+      <nav class="hidden md:flex items-center gap-8">
+        <a href="#reasons" class="text-sm font-medium text-zinc-400 hover:text-rose-300 transition-colors flex items-center gap-2">
+          <i class="fa-regular fa-square-check text-rose-500/70"></i> Reasons Why I Love Divya
+        </a>
+        <a href="#open-when" class="text-sm font-medium text-zinc-400 hover:text-rose-300 transition-colors flex items-center gap-2">
+          <i class="fa-regular fa-envelope text-amber-500/70"></i> 'Open When' Khat
+        </a>
+        <a href="#playlist" class="text-sm font-medium text-zinc-400 hover:text-rose-300 transition-colors flex items-center gap-2">
+          <i class="fa-solid fa-music text-rose-400/70"></i> Bollywood Playlist
+        </a>
+      </nav>
+
+      <!-- Right Action Controls -->
+      <div class="flex items-center gap-3">
+        <!-- Ambient Music Toggle Button -->
+        <button id="bgMusicToggle" title="Play Ambient Music" class="px-3.5 py-2 rounded-xl bg-darkcard border border-white/10 hover:border-rose-500/40 text-zinc-300 hover:text-rose-300 text-xs font-medium flex items-center gap-2 transition-all hover:shadow-glow-rose">
+          <i class="fa-solid fa-play text-rose-400" id="musicIcon"></i>
+          <span class="hidden sm:inline" id="musicText">Ambient Music 🎵</span>
+        </button>
+
+        <!-- Secret Surprise Trigger -->
+        <button id="surpriseBtn" title="Send Love Sparkle to Divya from Nishant" class="w-10 h-10 rounded-xl bg-gradient-to-tr from-rose-600/30 to-amber-600/20 border border-rose-500/30 text-rose-300 hover:text-white flex items-center justify-center hover:scale-105 transition-all shadow-glow-rose">
+          <i class="fa-solid fa-sparkles text-sm"></i>
+        </button>
+
+        <!-- Mobile Menu Toggle -->
+        <button id="mobileMenuBtn" class="md:hidden w-10 h-10 rounded-xl bg-darkcard border border-white/10 flex items-center justify-center text-zinc-300 hover:text-white">
+          <i class="fa-solid fa-bars" id="mobileMenuIcon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Nav -->
+    <div id="mobileDrawer" class="hidden md:hidden bg-darkcard/95 border-b border-white/10 px-6 py-6 space-y-4">
+      <a href="#reasons" class="mobile-nav-link block py-2 text-base font-medium text-zinc-300 hover:text-rose-400 flex items-center gap-3">
+        <i class="fa-regular fa-square-check text-rose-400 w-5"></i> Reasons Why I Love Divya
+      </a>
+      <a href="#open-when" class="mobile-nav-link block py-2 text-base font-medium text-zinc-300 hover:text-rose-400 flex items-center gap-3">
+        <i class="fa-regular fa-envelope text-amber-400 w-5"></i> 'Open When' Khat
+      </a>
+      <a href="#playlist" class="mobile-nav-link block py-2 text-base font-medium text-zinc-300 hover:text-rose-400 flex items-center gap-3">
+        <i class="fa-solid fa-music text-rose-400 w-5"></i> Bollywood Playlist
+      </a>
+    </div>
+  </header>
+
+  <!-- HERO & LOVE COUNTER SECTION -->
+  <section class="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
+      
+      <!-- Top Romantic Tagline Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs sm:text-sm font-medium mb-8 animate-pulse">
+        <i class="fa-solid fa-sparkles text-rose-400"></i>
+        <span>A Special Gift Created By Nishant For Divya 💖</span>
+      </div>
+
+      <!-- Partner Name Headline -->
+      <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.15] mb-6">
+        To My Dearest <span class="bg-gradient-to-r from-rose-400 via-rose-300 to-rosegold-400 bg-clip-text text-transparent italic">Divya</span>,
+        <br class="hidden sm:inline" /> You Are My Whole World.
+      </h1>
+
+      <!-- Romantic Subtitle in Hinglish -->
+      <p class="text-base sm:text-xl text-zinc-400 max-w-2xl mx-auto font-normal leading-relaxed mb-12">
+        Ye chhota sa digital corner Nishant ne sirf apni pyaari Divya ke liye banaya hai. Yahan hamari sabse pyaari yaadein, secret notes, aur hum dono ke favorite Bollywood songs hain!
+      </p>
+
+      <!-- REAL-TIME LOVE COUNTER WIDGET -->
+      <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-3xl mx-auto border border-rose-500/20 shadow-glow-subtle backdrop-blur-2xl">
+        <div class="flex items-center justify-center gap-2 text-xs font-semibold uppercase tracking-widest text-rosegold-400 mb-6">
+          <i class="fa-solid fa-infinity text-rose-400"></i>
+          <span>Nishant & Divya Together (Time Counter) ♾️</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="bg-pitch/60 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+            <span id="cntDays" class="font-serif text-3xl sm:text-4xl font-bold text-white mb-1">000</span>
+            <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Din (Days)</span>
+          </div>
+          <div class="bg-pitch/60 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+            <span id="cntHours" class="font-serif text-3xl sm:text-4xl font-bold text-rose-300 mb-1">00</span>
+            <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Ghante (Hours)</span>
+          </div>
+          <div class="bg-pitch/60 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+            <span id="cntMinutes" class="font-serif text-3xl sm:text-4xl font-bold text-rosegold-300 mb-1">00</span>
+            <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Minute (Minutes)</span>
+          </div>
+          <div class="bg-pitch/60 rounded-2xl p-4 border border-white/5 flex flex-col items-center">
+            <span id="cntSeconds" class="font-serif text-3xl sm:text-4xl font-bold text-rose-400 mb-1">00</span>
+            <span class="text-xs font-medium text-zinc-400 uppercase tracking-wider">Second (Seconds)</span>
+          </div>
+        </div>
+
+        <p class="mt-6 text-xs text-zinc-500 flex items-center justify-center gap-2">
+          <i class="fa-regular fa-clock text-rose-500/60"></i>
+          <span>Jab se tum Nishant ki life mein aayi ho Divya, har ek second bohot special hai...</span>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 1: REASONS WHY I LOVE YOU (INTERACTIVE 3D FLIP CARDS) -->
+  <section id="reasons" class="py-20 relative z-10 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-rose-400 mb-2">
+            <i class="fa-solid fa-heart-pulse"></i> From Nishant To Divya
+          </div>
+          <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white">
+            Reasons Why Nishant Loves Divya
+          </h2>
+          <p class="text-zinc-400 text-sm sm:text-base mt-2 max-w-xl">
+            Har card pe click karo aur dekho kyon tum Nishant ke liye itni special ho Divya! 💫
+          </p>
+        </div>
+
+        <!-- Controls: Flip Counter & Flip All Button -->
+        <div class="flex items-center gap-4">
+          <div class="px-4 py-2 rounded-xl bg-darkcard border border-white/10 text-xs text-zinc-300 font-medium flex items-center gap-2">
+            <i class="fa-solid fa-key text-amber-400"></i>
+            <span id="revealedCountText">0 of 6 Reasons Unlocked</span>
+          </div>
+          <button id="flipAllBtn" class="px-4 py-2.5 rounded-xl bg-rose-500/10 border border-rose-500/30 hover:bg-rose-500/20 text-rose-300 text-xs font-semibold flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-rotate-left"></i>
+            <span id="flipAllLabel">Sabhi Cards Kholo</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 6 FLIP CARDS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+        
+        <!-- CARD 1 -->
+        <div class="flip-card-scene h-80 cursor-pointer" onclick="toggleFlipCard(this)">
+          <div class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front glass-card p-6 flex flex-col justify-between border border-white/10 hover:border-rose-500/40 transition-all shimmer-effect">
+              <div>
+                <div class="flex items-center justify-between text-xs text-zinc-400 font-medium mb-4">
+                  <span class="px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-400 font-semibold">REASON #01</span>
+                  <i class="fa-regular fa-sparkles text-amber-400"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-500/20 to-amber-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-2xl mb-4">
+                  <i class="fa-solid fa-face-smile-beam"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Divya Ki Pyaari Muskaan</h3>
+                <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2">Jab tum smile karti ho na Divya, mera har bad day ekdum bright ho jata hai...</p>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-rose-400 font-semibold group">
+                <span>Card ko touch karke dekho ✦</span>
+                <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-card-back glass-card p-6 flex flex-col justify-between border border-rose-500/40 bg-gradient-to-br from-darkcard via-darksurface to-pitch">
+              <div>
+                <div class="flex items-center justify-between text-xs text-rose-400 font-semibold mb-3">
+                  <span>DIVYA REASON #01</span>
+                  <i class="fa-solid fa-heart text-rose-500"></i>
+                </div>
+                <p class="text-zinc-200 text-sm leading-relaxed font-serif italic mb-4">
+                  "Teri hassi dekh kar Nishant ka sabse bura din bhi ekdum bright ho jata hai Divya. Jab tum khilkhila kar smile karti ho na, toh sach mein poori duniya khoobsurat lagne lagti hai."
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
+                <span class="text-rosegold-300 font-medium">From Nishant ❤️</span>
+                <span class="text-rose-400 font-medium hover:underline">Wapas flip karo ↺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="flip-card-scene h-80 cursor-pointer" onclick="toggleFlipCard(this)">
+          <div class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front glass-card p-6 flex flex-col justify-between border border-white/10 hover:border-rose-500/40 transition-all shimmer-effect">
+              <div>
+                <div class="flex items-center justify-between text-xs text-zinc-400 font-medium mb-4">
+                  <span class="px-2.5 py-1 rounded-md bg-amber-500/10 border border-amber-500/20 text-amber-400 font-semibold">REASON #02</span>
+                  <i class="fa-regular fa-hand-holding-heart text-rose-400"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500/20 to-rose-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl mb-4">
+                  <i class="fa-solid fa-heart-circle-check"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Tera Soft Aur Caring Dil</h3>
+                <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2">Divya, jis tarah se tum sabka khayal rakhti ho... tera ye nature priceless hai!</p>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-amber-400 font-semibold group">
+                <span>Card ko touch karke dekho ✦</span>
+                <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-card-back glass-card p-6 flex flex-col justify-between border border-amber-500/40 bg-gradient-to-br from-darkcard via-darksurface to-pitch">
+              <div>
+                <div class="flex items-center justify-between text-xs text-amber-400 font-semibold mb-3">
+                  <span>DIVYA REASON #02</span>
+                  <i class="fa-solid fa-sparkles text-amber-400"></i>
+                </div>
+                <p class="text-zinc-200 text-sm leading-relaxed font-serif italic mb-4">
+                  "Divya, tumhara dil itna saaf aur caring hai. Sabka khayal rakhna, Nishant ki chhote-chhote details yaad rakhna... Tera ye pyaara nature mujhe roz tumse dubara pyaar karwata hai."
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
+                <span class="text-rosegold-300 font-medium">From Nishant ❤️</span>
+                <span class="text-amber-400 font-medium hover:underline">Wapas flip karo ↺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="flip-card-scene h-80 cursor-pointer" onclick="toggleFlipCard(this)">
+          <div class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front glass-card p-6 flex flex-col justify-between border border-white/10 hover:border-rose-500/40 transition-all shimmer-effect">
+              <div>
+                <div class="flex items-center justify-between text-xs text-zinc-400 font-medium mb-4">
+                  <span class="px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-400 font-semibold">REASON #03</span>
+                  <i class="fa-solid fa-moon text-indigo-400"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-indigo-500/20 to-rose-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-2xl mb-4">
+                  <i class="fa-solid fa-comments"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Hamari Raat Ki Baatein</h3>
+                <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2">Raat ke 2 baje tumse baatein karna Nishant ka sabse favorite part of the day hai Divya...</p>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-indigo-400 font-semibold group">
+                <span>Card ko touch karke dekho ✦</span>
+                <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-card-back glass-card p-6 flex flex-col justify-between border border-indigo-500/40 bg-gradient-to-br from-darkcard via-darksurface to-pitch">
+              <div>
+                <div class="flex items-center justify-between text-xs text-indigo-400 font-semibold mb-3">
+                  <span>DIVYA REASON #03</span>
+                  <i class="fa-solid fa-moon text-indigo-400"></i>
+                </div>
+                <p class="text-zinc-200 text-sm leading-relaxed font-serif italic mb-4">
+                  "Raat ke 2 baje tumse baatein karna Nishant ka sabse favorite kaam hai Divya. Life, dreams, aur hamari silly baatein—tumhare saath time ka pata hi nahi chalta."
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
+                <span class="text-rosegold-300 font-medium">From Nishant ❤️</span>
+                <span class="text-indigo-400 font-medium hover:underline">Wapas flip karo ↺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="flip-card-scene h-80 cursor-pointer" onclick="toggleFlipCard(this)">
+          <div class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front glass-card p-6 flex flex-col justify-between border border-white/10 hover:border-rose-500/40 transition-all shimmer-effect">
+              <div>
+                <div class="flex items-center justify-between text-xs text-zinc-400 font-medium mb-4">
+                  <span class="px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-semibold">REASON #04</span>
+                  <i class="fa-solid fa-fire text-emerald-400"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500/20 to-teal-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-2xl mb-4">
+                  <i class="fa-solid fa-lightbulb"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Divya Ka Hard Work Aur Passion</h3>
+                <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2">Jab tum dedicated ho kar kaam karti ho na Divya, Nishant ko bohot inspiration milti hai...</p>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-emerald-400 font-semibold group">
+                <span>Card ko touch karke dekho ✦</span>
+                <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-card-back glass-card p-6 flex flex-col justify-between border border-emerald-500/40 bg-gradient-to-br from-darkcard via-darksurface to-pitch">
+              <div>
+                <div class="flex items-center justify-between text-xs text-emerald-400 font-semibold mb-3">
+                  <span>DIVYA REASON #04</span>
+                  <i class="fa-solid fa-star text-emerald-400"></i>
+                </div>
+                <p class="text-zinc-200 text-sm leading-relaxed font-serif italic mb-4">
+                  "Jab tum kisi kaam mein apna 100% deti ho na Divya, tumhari aankhon ki woh chamak dekh kar Nishant ko bohot proud feel hota hai. Tum meri sabse badi inspiration ho!"
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
+                <span class="text-rosegold-300 font-medium">From Nishant ❤️</span>
+                <span class="text-emerald-400 font-medium hover:underline">Wapas flip karo ↺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="flip-card-scene h-80 cursor-pointer" onclick="toggleFlipCard(this)">
+          <div class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front glass-card p-6 flex flex-col justify-between border border-white/10 hover:border-rose-500/40 transition-all shimmer-effect">
+              <div>
+                <div class="flex items-center justify-between text-xs text-zinc-400 font-medium mb-4">
+                  <span class="px-2.5 py-1 rounded-md bg-purple-500/10 border border-purple-500/20 text-purple-400 font-semibold">REASON #05</span>
+                  <i class="fa-solid fa-shield-heart text-purple-400"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-500/20 to-rose-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-2xl mb-4">
+                  <i class="fa-solid fa-house-chimney-heart"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Mera Sukoon Aur Safe Space</h3>
+                <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2">Divya tumhare saath rehne se aisa lagta hai jaise Nishant apne ghar mein ho. Full sukoon...</p>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-purple-400 font-semibold group">
+                <span>Card ko touch karke dekho ✦</span>
+                <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-card-back glass-card p-6 flex flex-col justify-between border border-purple-500/40 bg-gradient-to-br from-darkcard via-darksurface to-pitch">
+              <div>
+                <div class="flex items-center justify-between text-xs text-purple-400 font-semibold mb-3">
+                  <span>DIVYA REASON #05</span>
+                  <i class="fa-solid fa-house-user text-purple-400"></i>
+                </div>
+                <p class="text-zinc-200 text-sm leading-relaxed font-serif italic mb-4">
+                  "Tumhare saath mujhe kabhi pretend nahi karna padta Divya. Nishant full pagal ban sakta hai kyunki mujhe pata hai tum mujhe waise hi pyaar karti ho."
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
+                <span class="text-rosegold-300 font-medium">From Nishant ❤️</span>
+                <span class="text-purple-400 font-medium hover:underline">Wapas flip karo ↺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CARD 6 -->
+        <div class="flip-card-scene h-80 cursor-pointer" onclick="toggleFlipCard(this)">
+          <div class="flip-card-inner">
+            <!-- Front -->
+            <div class="flip-card-front glass-card p-6 flex flex-col justify-between border border-white/10 hover:border-rose-500/40 transition-all shimmer-effect">
+              <div>
+                <div class="flex items-center justify-between text-xs text-zinc-400 font-medium mb-4">
+                  <span class="px-2.5 py-1 rounded-md bg-rose-500/10 border border-rose-500/20 text-rose-400 font-semibold">REASON #06</span>
+                  <i class="fa-solid fa-infinity text-rose-400"></i>
+                </div>
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-rose-500/20 to-amber-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-2xl mb-4">
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h3 class="font-serif text-2xl font-bold text-white mb-2">Hamare Secret Inside Jokes</h3>
+                <p class="text-zinc-400 text-xs sm:text-sm line-clamp-2">Random kitchen dance, funny code names, aur baatein jo sirf Nishant aur Divya samajhte hain...</p>
+              </div>
+              <div class="pt-4 border-t border-white/5 flex items-center justify-between text-xs text-rose-400 font-semibold group">
+                <span>Card ko touch karke dekho ✦</span>
+                <i class="fa-solid fa-arrow-right-long group-hover:translate-x-1 transition-transform"></i>
+              </div>
+            </div>
+            <!-- Back -->
+            <div class="flip-card-back glass-card p-6 flex flex-col justify-between border border-rose-500/40 bg-gradient-to-br from-darkcard via-darksurface to-pitch">
+              <div>
+                <div class="flex items-center justify-between text-xs text-rose-400 font-semibold mb-3">
+                  <span>DIVYA REASON #06</span>
+                  <i class="fa-solid fa-heart-circle-bolt text-rose-400"></i>
+                </div>
+                <p class="text-zinc-200 text-sm leading-relaxed font-serif italic mb-4">
+                  "Hamaare ajeeb code names, random kitchen dance, aur woh baatein jo sirf hum samajhte hain... Divya, tum jaisa iss duniya mein koi nahi hai!"
+                </p>
+              </div>
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between text-xs text-zinc-400">
+                <span class="text-rosegold-300 font-medium">From Nishant ❤️</span>
+                <span class="text-rose-400 font-medium hover:underline">Wapas flip karo ↺</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SECTION 2: "OPEN WHEN..." DIGITAL LETTERS FROM NISHANT TO DIVYA -->
+  <section id="open-when" class="py-20 relative z-10 border-t border-white/5 bg-pitch/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-amber-400 mb-2">
+          <i class="fa-regular fa-envelope"></i> Nishant's Letter Box For Divya
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">
+          'Open When' Khat For Divya 💌
+        </h2>
+        <p class="text-zinc-400 text-sm sm:text-base">
+          Jab bhi tumhe sukoon chahiye, kisi help ki zaroorat ho, ya bas smile karna ho—Nishant ke likhe kisi bhi lifafe ko open karna Divya!
+        </p>
+      </div>
+
+      <!-- ENVELOPES GRID -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Envelope 1 -->
+        <div onclick="openLetter(1)" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative group overflow-hidden border border-white/10 flex flex-col justify-between h-56">
+          <div class="flex items-start justify-between">
+            <div class="w-12 h-12 rounded-xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-rose-400 text-xl group-hover:scale-110 transition-transform">
+              💌
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-pitch/60 border border-white/10 text-zinc-400">KHAT #1</span>
+          </div>
+
+          <div>
+            <h3 class="font-serif text-xl font-bold text-white group-hover:text-rose-300 transition-colors mb-1">Jab Tumhe Meri Yaad Aaye</h3>
+            <p class="text-xs text-zinc-400">Jab bhi Nishant ka khayal aaye aur distance thoda zyada lagne lage...</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-rose-400 font-medium">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-stamp text-amber-400"></i> From Nishant</span>
+            <span class="group-hover:translate-x-1 transition-transform">Khat Kholo ✉️</span>
+          </div>
+        </div>
+
+        <!-- Envelope 2 -->
+        <div onclick="openLetter(2)" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative group overflow-hidden border border-white/10 flex flex-col justify-between h-56">
+          <div class="flex items-start justify-between">
+            <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl group-hover:scale-110 transition-transform">
+              🌧️
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-pitch/60 border border-white/10 text-zinc-400">KHAT #2</span>
+          </div>
+
+          <div>
+            <h3 class="font-serif text-xl font-bold text-white group-hover:text-amber-300 transition-colors mb-1">Jab Din Accha Na Gaya Ho</h3>
+            <p class="text-xs text-zinc-400">Nishant ki taraf se ek warm virtual hug & reminder...</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-amber-400 font-medium">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-cloud-sun text-amber-400"></i> Warm Hug</span>
+            <span class="group-hover:translate-x-1 transition-transform">Khat Kholo ✉️</span>
+          </div>
+        </div>
+
+        <!-- Envelope 3 -->
+        <div onclick="openLetter(3)" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative group overflow-hidden border border-white/10 flex flex-col justify-between h-56">
+          <div class="flex items-start justify-between">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 text-xl group-hover:scale-110 transition-transform">
+              🎂
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-pitch/60 border border-white/10 text-zinc-400">KHAT #3</span>
+          </div>
+
+          <div>
+            <h3 class="font-serif text-xl font-bold text-white group-hover:text-purple-300 transition-colors mb-1">Tumhare Birthday Par</h3>
+            <p class="text-xs text-zinc-400">Celebrating another gorgeous year of Divya being awesome...</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-purple-400 font-medium">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-cake-candles text-purple-400"></i> Celebration</span>
+            <span class="group-hover:translate-x-1 transition-transform">Khat Kholo ✉️</span>
+          </div>
+        </div>
+
+        <!-- Envelope 4 -->
+        <div onclick="openLetter(4)" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative group overflow-hidden border border-white/10 flex flex-col justify-between h-56">
+          <div class="flex items-start justify-between">
+            <div class="w-12 h-12 rounded-xl bg-indigo-500/10 border border-indigo-500/30 flex items-center justify-center text-indigo-400 text-xl group-hover:scale-110 transition-transform">
+              🌙
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-pitch/60 border border-white/10 text-zinc-400">KHAT #4</span>
+          </div>
+
+          <div>
+            <h3 class="font-serif text-xl font-bold text-white group-hover:text-indigo-300 transition-colors mb-1">Jab Raat Ko Neend Na Aaye</h3>
+            <p class="text-xs text-zinc-400">Quiet midnight thoughts from Nishant for Divya to sleep peacefully...</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-indigo-400 font-medium">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-bed text-indigo-400"></i> Sweet Dreams</span>
+            <span class="group-hover:translate-x-1 transition-transform">Khat Kholo ✉️</span>
+          </div>
+        </div>
+
+        <!-- Envelope 5 -->
+        <div onclick="openLetter(5)" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative group overflow-hidden border border-white/10 flex flex-col justify-between h-56">
+          <div class="flex items-start justify-between">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl group-hover:scale-110 transition-transform">
+              ✨
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-pitch/60 border border-white/10 text-zinc-400">KHAT #5</span>
+          </div>
+
+          <div>
+            <h3 class="font-serif text-xl font-bold text-white group-hover:text-emerald-300 transition-colors mb-1">Jab Confidence Chahiye Ho</h3>
+            <p class="text-xs text-zinc-400">A quick booster: Divya tum bohot strong, smart & capable ho!</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-emerald-400 font-medium">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-crown text-emerald-400"></i> You've Got This</span>
+            <span class="group-hover:translate-x-1 transition-transform">Khat Kholo ✉️</span>
+          </div>
+        </div>
+
+        <!-- Envelope 6 -->
+        <div onclick="openLetter(6)" class="glass-card glass-card-hover rounded-2xl p-6 cursor-pointer relative group overflow-hidden border border-white/10 flex flex-col justify-between h-56">
+          <div class="flex items-start justify-between">
+            <div class="w-12 h-12 rounded-xl bg-rose-600/10 border border-rose-600/30 flex items-center justify-center text-rose-500 text-xl group-hover:scale-110 transition-transform">
+              🤝
+            </div>
+            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-md bg-pitch/60 border border-white/10 text-zinc-400">KHAT #6</span>
+          </div>
+
+          <div>
+            <h3 class="font-serif text-xl font-bold text-white group-hover:text-rose-300 transition-colors mb-1">Jab Hamari Ladai Ho Jaaye</h3>
+            <p class="text-xs text-zinc-400">Kyunki hamara pyaar iss kisi bhi ladai se bohot bada hai...</p>
+          </div>
+
+          <div class="flex items-center justify-between pt-3 border-t border-white/5 text-xs text-rose-500 font-medium">
+            <span class="flex items-center gap-1.5"><i class="fa-solid fa-heart text-rose-500"></i> Always Us</span>
+            <span class="group-hover:translate-x-1 transition-transform">Khat Kholo ✉️</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LETTER MODAL DIALOG -->
+  <dialog id="letterModal" class="bg-transparent p-4 sm:p-6 max-w-2xl w-full backdrop:bg-black/85 outline-none">
+    <div class="glass-card rounded-3xl p-6 sm:p-10 border border-rose-500/30 shadow-2xl relative bg-gradient-to-b from-darkcard via-darksurface to-pitch overflow-hidden">
+      
+      <!-- Top Decorative Bar & Close Button -->
+      <div class="flex items-center justify-between pb-6 border-b border-white/10 mb-6">
+        <div class="flex items-center gap-3">
+          <span id="modalIcon" class="text-2xl">💌</span>
+          <div>
+            <span id="modalBadge" class="text-[10px] font-bold uppercase tracking-wider text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/20">FROM NISHANT FOR DIVYA</span>
+            <h3 id="modalTitle" class="font-serif text-xl font-bold text-white">Jab Tumhe Meri Yaad Aaye</h3>
+          </div>
+        </div>
+        <button onclick="closeLetterModal()" class="w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center text-zinc-400 hover:text-white transition-colors">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Letter Body Text -->
+      <div class="py-2 space-y-4">
+        <p class="font-handwritten text-2xl sm:text-3xl text-rosegold-300">Meri Pyaari Divya,</p>
+        <div id="modalBody" class="font-handwritten text-xl sm:text-2xl text-zinc-200 leading-relaxed space-y-3">
+          <!-- Injected via JavaScript -->
+        </div>
+      </div>
+
+      <!-- Signature & Footer Buttons -->
+      <div class="mt-8 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="font-handwritten text-xl text-rose-400">
+          Forever & Always Yours, <br/>
+          <span class="text-rosegold-300 font-bold">Tera Nishant ❤️</span>
+        </div>
+
+        <div class="flex items-center gap-3 w-full sm:w-auto">
+          <button onclick="copyLetterText()" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-pitch border border-white/10 text-xs font-medium text-zinc-300 hover:text-white hover:border-white/20 flex items-center justify-center gap-2">
+            <i class="fa-regular fa-copy"></i> Khat Copy Karo
+          </button>
+          <button onclick="closeLetterModal()" class="flex-1 sm:flex-none px-5 py-2.5 rounded-xl bg-gradient-to-r from-rose-500 to-rose-600 text-white font-medium text-xs shadow-glow-rose hover:opacity-90 flex items-center justify-center gap-2">
+            Lifafa Band Karo
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </dialog>
+
+  <!-- SECTION 3: "OUR SHARED PLAYLIST HUB" (BOLLYWOOD CUSTOM AUDIO PLAYER) -->
+  <section id="playlist" class="py-20 relative z-10 border-t border-white/5">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <div class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-rose-400 mb-2">
+          <i class="fa-solid fa-music"></i> Bollywood Romance
+        </div>
+        <h2 class="font-serif text-3xl sm:text-5xl font-bold text-white mb-4">
+          Nishant & Divya Ki Bollywood Playlist 🎵
+        </h2>
+        <p class="text-zinc-400 text-sm sm:text-base">
+          Har gaane ke piche Nishant aur Divya ki ek khoobsurat memory hai. Kisi bhi gaane ka <strong class="text-rose-400 font-semibold">Play Button ▶️</strong> dabao aur Arijit Singh, Jubin Nautiyal & Mohit Chauhan ka asli gaana suno!
+        </p>
+      </div>
+
+      <!-- PLAYLIST LAYOUT: CUSTOM AUDIO PLAYER + TRACKLIST WITH POLAROID STORIES -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- SLEEK CUSTOM VINYL MUSIC PLAYER CARD -->
+        <div class="lg:col-span-5 glass-card rounded-3xl p-6 sm:p-8 border border-rose-500/30 shadow-glow-rose lg:sticky lg:top-28 bg-gradient-to-b from-darkcard via-darksurface to-pitch">
+          
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-rose-400">
+              <i class="fa-solid fa-compact-disc text-rose-500 text-base"></i>
+              <span>Divya & Nishant Bollywood Player</span>
+            </div>
+            
+            <!-- Audio Equalizer Indicator -->
+            <div class="flex items-end gap-1 h-5" id="equalizerVisualizer">
+              <div class="w-1 bg-rose-500 rounded-full equalizer-bar"></div>
+              <div class="w-1 bg-amber-400 rounded-full equalizer-bar"></div>
+              <div class="w-1 bg-rose-400 rounded-full equalizer-bar"></div>
+              <div class="w-1 bg-rosegold-400 rounded-full equalizer-bar"></div>
+            </div>
+          </div>
+
+          <!-- VINYL / ALBUM ARTWORK CONTAINER -->
+          <div class="relative w-48 h-48 sm:w-56 sm:h-56 mx-auto mb-6 flex items-center justify-center">
+            <!-- Outer Glowing Aura -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-rose-500/30 via-amber-500/20 to-rose-600/30 blur-md animate-pulse"></div>
+            
+            <!-- Vinyl Record Artwork -->
+            <div id="vinylDisk" class="w-full h-full rounded-full bg-black border-4 border-zinc-800 p-2 shadow-2xl flex items-center justify-center relative overflow-hidden transition-all duration-700">
+              <!-- Vinyl Groove Rings -->
+              <div class="absolute inset-2 rounded-full border border-white/10"></div>
+              <div class="absolute inset-6 rounded-full border border-white/5"></div>
+              <div class="absolute inset-10 rounded-full border border-white/10"></div>
+
+              <!-- Center Album Cover Image -->
+              <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-full overflow-hidden border-2 border-amber-400/50 shadow-inner z-10">
+                <img id="playerAlbumArt" src="assets/polaroid_sunset.jpg" alt="Now Playing Album Art" class="w-full h-full object-cover" />
+              </div>
+              
+              <!-- Center Spindle Hole -->
+              <div class="w-5 h-5 rounded-full bg-pitch border-2 border-zinc-600 absolute z-20"></div>
+            </div>
+          </div>
+
+          <!-- SONG INFO -->
+          <div class="text-center mb-6">
+            <h3 id="playerSongTitle" class="font-serif text-2xl font-bold text-white mb-1">Kesariya 🧡</h3>
+            <p id="playerArtist" class="text-xs text-rose-300 font-medium">Arijit Singh, Pritam • Brahmāstra</p>
+          </div>
+
+          <!-- AUDIO PROGRESS BAR WITH SEEK SLIDER -->
+          <div class="space-y-1.5 mb-6">
+            <div class="relative w-full h-3 flex items-center group cursor-pointer">
+              <input type="range" id="seekSlider" min="0" max="100" value="0" step="0.1" class="w-full h-2 bg-zinc-800 rounded-full appearance-none cursor-pointer accent-rose-500 hover:accent-rose-400 focus:outline-none" />
+            </div>
+            <div class="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+              <span id="currentTimeText">0:00</span>
+              <span id="durationText">0:00</span>
+            </div>
+          </div>
+
+          <!-- PLAYER CONTROLS (PREV / REWIND 10S / PLAY-PAUSE / FORWARD 10S / NEXT) -->
+          <div class="flex items-center justify-center gap-3 sm:gap-4 mb-2">
+            <!-- Prev Track -->
+            <button onclick="prevTrack()" class="w-9 h-9 rounded-full bg-pitch border border-white/10 hover:border-rose-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-all" title="Pichhla Gaana">
+              <i class="fa-solid fa-backward-step text-xs"></i>
+            </button>
+
+            <!-- 10s Rewind -->
+            <button onclick="rewind10()" class="w-9 h-9 rounded-full bg-pitch border border-white/10 hover:border-rose-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-all" title="10 Second Piche Karo (Rewind 10s)">
+              <i class="fa-solid fa-rotate-left text-xs"></i>
+            </button>
+
+            <!-- Main Play / Pause -->
+            <button id="playerMainPlayBtn" onclick="toggleMainPlay()" class="w-14 h-14 rounded-full bg-gradient-to-tr from-rose-500 to-rose-600 text-white border border-rose-400 flex items-center justify-center shadow-glow-rose hover:scale-105 transition-all">
+              <i class="fa-solid fa-play text-lg ml-0.5" id="mainPlayIcon"></i>
+            </button>
+
+            <!-- 10s Fast Forward -->
+            <button onclick="forward10()" class="w-9 h-9 rounded-full bg-pitch border border-white/10 hover:border-rose-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-all" title="10 Second Aage Karo (Forward 10s)">
+              <i class="fa-solid fa-rotate-right text-xs"></i>
+            </button>
+
+            <!-- Next Track -->
+            <button onclick="nextTrack()" class="w-9 h-9 rounded-full bg-pitch border border-white/10 hover:border-rose-500/40 text-zinc-400 hover:text-white flex items-center justify-center transition-all" title="Agla Gaana">
+              <i class="fa-solid fa-forward-step text-xs"></i>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- TRACKLIST & POLAROID MEMORIES (BOLLYWOOD CLASSICS) -->
+        <div class="lg:col-span-7 space-y-4">
+          
+          <!-- TRACK 1: KESARIYA -->
+          <div id="trackCard-1" class="glass-card rounded-2xl p-5 border border-rose-500/40 transition-all hover:border-rose-400">
+            <div class="flex items-center justify-between gap-4 cursor-pointer" onclick="toggleStory(1)">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-zinc-800 border border-white/10 flex-shrink-0">
+                  <img src="assets/polaroid_sunset.jpg" alt="Kesariya Sunset Drive" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider">GAANA #1</span>
+                  <h4 class="font-serif text-lg font-bold text-white">Kesariya 🧡</h4>
+                  <p class="text-xs text-zinc-400">Arijit Singh, Pritam • Brahmāstra</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <button id="trackBtn-1" onclick="event.stopPropagation(); playTrackIndex(1)" class="w-10 h-10 rounded-full bg-rose-500 hover:bg-rose-600 text-white border border-rose-400 flex items-center justify-center transition-all shadow-glow-rose" title="Play Kesariya">
+                  <i class="fa-solid fa-play text-xs ml-0.5" id="trackIcon-1"></i>
+                </button>
+                <i id="chevron-1" class="fa-solid fa-chevron-down text-zinc-400 text-xs transition-transform duration-300"></i>
+              </div>
+            </div>
+
+            <!-- Expandable Polaroid Story -->
+            <div id="story-1" class="hidden pt-5 mt-4 border-t border-white/10 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div class="sm:col-span-5 bg-white p-2 pb-6 rounded-lg shadow-xl transform -rotate-2 hover:rotate-0 transition-transform">
+                  <img src="assets/polaroid_sunset.jpg" alt="Kesariya Memory" class="w-full h-36 object-cover rounded" />
+                  <p class="font-handwritten text-zinc-800 text-center text-sm mt-2 font-bold">Sunset Drive With Divya 🌅</p>
+                </div>
+                <div class="sm:col-span-7 space-y-2">
+                  <span class="text-xs font-semibold text-rosegold-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-heart text-rose-500"></i> Divya & Nishant Memory:
+                  </span>
+                  <p class="text-xs sm:text-sm text-zinc-300 italic font-serif leading-relaxed">
+                    "Yaad hai Divya jab hum shaam ko drive pe gaye the aur sunset kitna khoobsurat lag raha tha? Aasmaan poora rose-gold tha aur tumne Nishant ka haath pakad kar 'Kesariya tera ishq hai piya' par saath mein gaya tha..."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRACK 2: APNA BANA LE -->
+          <div id="trackCard-2" class="glass-card rounded-2xl p-5 border border-white/10 transition-all hover:border-rose-400">
+            <div class="flex items-center justify-between gap-4 cursor-pointer" onclick="toggleStory(2)">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-zinc-800 border border-white/10 flex-shrink-0">
+                  <img src="assets/polaroid_stargazing.jpg" alt="Apna Bana Le Stargazing" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <span class="text-[10px] font-bold text-amber-400 uppercase tracking-wider">GAANA #2</span>
+                  <h4 class="font-serif text-lg font-bold text-white">Apna Bana Le ✨</h4>
+                  <p class="text-xs text-zinc-400">Arijit Singh, Sachin-Jigar • Bhediya</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <button id="trackBtn-2" onclick="event.stopPropagation(); playTrackIndex(2)" class="w-10 h-10 rounded-full bg-amber-500 hover:bg-amber-600 text-white border border-amber-400 flex items-center justify-center transition-all shadow-glow-gold" title="Play Apna Bana Le">
+                  <i class="fa-solid fa-play text-xs ml-0.5" id="trackIcon-2"></i>
+                </button>
+                <i id="chevron-2" class="fa-solid fa-chevron-down text-zinc-400 text-xs transition-transform duration-300"></i>
+              </div>
+            </div>
+
+            <!-- Expandable Polaroid Story -->
+            <div id="story-2" class="hidden pt-5 mt-4 border-t border-white/10 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div class="sm:col-span-5 bg-white p-2 pb-6 rounded-lg shadow-xl transform rotate-2 hover:rotate-0 transition-transform">
+                  <img src="assets/polaroid_stargazing.jpg" alt="Apna Bana Le Memory" class="w-full h-36 object-cover rounded" />
+                  <p class="font-handwritten text-zinc-800 text-center text-sm mt-2 font-bold">Starry Night ✨</p>
+                </div>
+                <div class="sm:col-span-7 space-y-2">
+                  <span class="text-xs font-semibold text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-star text-amber-400"></i> Divya & Nishant Memory:
+                  </span>
+                  <p class="text-xs sm:text-sm text-zinc-300 italic font-serif leading-relaxed">
+                    "Woh cozy stargazing raat jab hum dono ek hi blanket mein baithe the Divya. Jab 'Apna bana le piya' baja, tumne Nishant ke shoulder pe apna sar rakha... Pure magic!"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRACK 3: RAATAAN LAMBIYAN -->
+          <div id="trackCard-3" class="glass-card rounded-2xl p-5 border border-white/10 transition-all hover:border-rose-400">
+            <div class="flex items-center justify-between gap-4 cursor-pointer" onclick="toggleStory(3)">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-zinc-800 border border-white/10 flex-shrink-0">
+                  <img src="assets/polaroid_coffee.jpg" alt="Raataan Lambiyan Coffee Date" class="w-full h-full object-cover" />
+                </div>
+                <div>
+                  <span class="text-[10px] font-bold text-purple-400 uppercase tracking-wider">GAANA #3</span>
+                  <h4 class="font-serif text-lg font-bold text-white">Raataan Lambiyan 🌙</h4>
+                  <p class="text-xs text-zinc-400">Jubin Nautiyal, Asees Kaur • Shershaah</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <button id="trackBtn-3" onclick="event.stopPropagation(); playTrackIndex(3)" class="w-10 h-10 rounded-full bg-purple-500 hover:bg-purple-600 text-white border border-purple-400 flex items-center justify-center transition-all shadow-glow-subtle" title="Play Raataan Lambiyan">
+                  <i class="fa-solid fa-play text-xs ml-0.5" id="trackIcon-3"></i>
+                </button>
+                <i id="chevron-3" class="fa-solid fa-chevron-down text-zinc-400 text-xs transition-transform duration-300"></i>
+              </div>
+            </div>
+
+            <!-- Expandable Polaroid Story -->
+            <div id="story-3" class="hidden pt-5 mt-4 border-t border-white/10 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div class="sm:col-span-5 bg-white p-2 pb-6 rounded-lg shadow-xl transform -rotate-1 hover:rotate-0 transition-transform">
+                  <img src="assets/polaroid_coffee.jpg" alt="Raataan Lambiyan Memory" class="w-full h-36 object-cover rounded" />
+                  <p class="font-handwritten text-zinc-800 text-center text-sm mt-2 font-bold">Rainy Coffee Date ☕</p>
+                </div>
+                <div class="sm:col-span-7 space-y-2">
+                  <span class="text-xs font-semibold text-purple-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-mug-hot text-purple-400"></i> Divya & Nishant Memory:
+                  </span>
+                  <p class="text-xs sm:text-sm text-zinc-300 italic font-serif leading-relaxed">
+                    "Hamari cozy coffee date jab baahar bohot tez baarish ho rahi thi. Garam latte, chocolate cake aur 'Teri meri baaton ko chura liya...' playing in the background!"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TRACK 4: TUM SE HI -->
+          <div id="trackCard-4" class="glass-card rounded-2xl p-5 border border-white/10 transition-all hover:border-rose-400">
+            <div class="flex items-center justify-between gap-4 cursor-pointer" onclick="toggleStory(4)">
+              <div class="flex items-center gap-4">
+                <div class="w-14 h-14 rounded-xl overflow-hidden bg-gradient-to-br from-rose-500/20 to-amber-500/20 border border-white/10 flex items-center justify-center text-rose-400 text-2xl flex-shrink-0">
+                  <i class="fa-solid fa-music"></i>
+                </div>
+                <div>
+                  <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">GAANA #4</span>
+                  <h4 class="font-serif text-lg font-bold text-white">Tum Se Hi ❤️</h4>
+                  <p class="text-xs text-zinc-400">Mohit Chauhan, Pritam • Jab We Met</p>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-3">
+                <button id="trackBtn-4" onclick="event.stopPropagation(); playTrackIndex(4)" class="w-10 h-10 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white border border-emerald-400 flex items-center justify-center transition-all shadow-glow-subtle" title="Play Tum Se Hi">
+                  <i class="fa-solid fa-play text-xs ml-0.5" id="trackIcon-4"></i>
+                </button>
+                <i id="chevron-4" class="fa-solid fa-chevron-down text-zinc-400 text-xs transition-transform duration-300"></i>
+              </div>
+            </div>
+
+            <!-- Expandable Polaroid Story -->
+            <div id="story-4" class="hidden pt-5 mt-4 border-t border-white/10 space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-center">
+                <div class="sm:col-span-5 bg-white p-2 pb-6 rounded-lg shadow-xl transform rotate-1 hover:rotate-0 transition-transform">
+                  <div class="w-full h-36 bg-gradient-to-tr from-darkcard to-darksurface rounded flex items-center justify-center text-rose-400 text-3xl">
+                    <i class="fa-solid fa-heart-pulse"></i>
+                  </div>
+                  <p class="font-handwritten text-zinc-800 text-center text-sm mt-2 font-bold">Kitchen Slow Dance 🍳</p>
+                </div>
+                <div class="sm:col-span-7 space-y-2">
+                  <span class="text-xs font-semibold text-emerald-300 uppercase tracking-wider flex items-center gap-1.5">
+                    <i class="fa-solid fa-heart text-emerald-400"></i> Divya & Nishant Memory:
+                  </span>
+                  <p class="text-xs sm:text-sm text-zinc-300 italic font-serif leading-relaxed">
+                    "Jab hum khana bana rahe the aur 'Na hai yeh pana, na khona hi hai...' chalu hua... Nishant ne Divya ka haath pakad kar kitchen ke beech mein slow dance shuru kar diya!"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER SECTION -->
+  <footer class="py-12 border-t border-white/10 bg-pitch relative z-10">
+    <div class="max-w-7xl mx-auto px-4 text-center space-y-4">
+      <div class="inline-flex items-center gap-2 text-rose-400 text-lg">
+        <i class="fa-solid fa-heart animate-bounce"></i>
+      </div>
+
+      <p class="font-serif text-lg font-medium text-zinc-300">
+        Crafted with infinite love by <span class="text-white font-bold">Nishant</span> for his Dearest <span class="text-rosegold-300 italic">Divya</span> 💖
+      </p>
+
+      <p class="text-xs text-zinc-500">
+        Nishant ❤️ Divya • Forever & Always • © <span id="currentYear">2026</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT FOR INTERACTIVITY & LOCAL BOLLYWOOD MP3 AUDIO PLAYER -->
+  <script>
+    // Set Current Year in Footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // 1. PARTICLE CANVAS ANIMATION (Floating Hearts & Glowing Sparkles)
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+      reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height + Math.random() * 100;
+        this.size = Math.random() * 3 + 1;
+        this.speedY = Math.random() * 0.8 + 0.3;
+        this.speedX = (Math.random() - 0.5) * 0.4;
+        this.opacity = Math.random() * 0.5 + 0.2;
+        this.isHeart = Math.random() > 0.6;
+        this.color = Math.random() > 0.5 ? 'rgba(244, 63, 94, ' : 'rgba(224, 169, 109, ';
+      }
+      update() {
+        this.y -= this.speedY;
+        this.x += this.speedX;
+        if (this.y < -20) this.reset();
+      }
+      draw() {
+        ctx.fillStyle = this.color + this.opacity + ')';
+        if (this.isHeart) {
+          ctx.font = `${this.size * 3.5}px sans-serif`;
+          ctx.fillText('♥', this.x, this.y);
+        } else {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+    }
+
+    for (let i = 0; i < 40; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+
+    // 2. REAL-TIME ANNIVERSARY LOVE COUNTER
+    // Relationship start date: July 14, 2026 00:00:00
+    const startDate = new Date(2026, 6, 14, 0, 0, 0);
+
+    function updateLoveCounter() {
+      const now = new Date();
+      const diffMs = now - startDate;
+      if (diffMs < 0) return;
+
+      const seconds = Math.floor((diffMs / 1000) % 60);
+      const minutes = Math.floor((diffMs / (1000 * 60)) % 60);
+      const hours = Math.floor((diffMs / (1000 * 60 * 60)) % 24);
+      const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+      document.getElementById('cntDays').textContent = String(days).padStart(3, '0');
+      document.getElementById('cntHours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('cntMinutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('cntSeconds').textContent = String(seconds).padStart(2, '0');
+    }
+    setInterval(updateLoveCounter, 1000);
+    updateLoveCounter();
+
+
+    // 3. FLIP CARD LOGIC
+    const totalCards = 6;
+
+    function toggleFlipCard(cardScene) {
+      cardScene.classList.toggle('is-flipped');
+      updateRevealedCount();
+    }
+
+    function updateRevealedCount() {
+      const flipped = document.querySelectorAll('.flip-card-scene.is-flipped').length;
+      document.getElementById('revealedCountText').textContent = `${flipped} of ${totalCards} Reasons Unlocked`;
+      document.getElementById('flipAllLabel').textContent = flipped === totalCards ? 'Cards Band Karo' : 'Sabhi Cards Kholo';
+    }
+
+    document.getElementById('flipAllBtn').addEventListener('click', () => {
+      const cards = document.querySelectorAll('.flip-card-scene');
+      const allFlipped = Array.from(cards).every(c => c.classList.contains('is-flipped'));
+
+      cards.forEach(card => {
+        if (allFlipped) {
+          card.classList.remove('is-flipped');
+        } else {
+          card.classList.add('is-flipped');
+        }
+      });
+      updateRevealedCount();
+    });
+
+
+    // 4. 'OPEN WHEN...' LETTERS DATA FROM NISHANT FOR DIVYA
+    const lettersData = {
+      1: {
+        badge: "KHAT #1 FROM NISHANT",
+        icon: "💌",
+        title: "Jab Tumhe Meri Yaad Aaye",
+        body: `Jab bhi mera khayal aaye ya distance thoda zyada lagne lage, toh bas apni aankhein band karna aur ye yaad rakhna: Nishant ka dil humesha tumhare paas hi rehta hai Divya.<br/><br/>
+        Pyaar mein distance koi maayne nahi rakhta. Subah uthte hi pehla thought tumhara hota hai aur raat ko sone se pehle aakhri. Mujhe bas ek chhota sa text kar dena, Nishant humesha tumhare liye yahan hai!`
+      },
+      2: {
+        badge: "KHAT #2 FROM NISHANT",
+        icon: "🌧️",
+        title: "Jab Din Accha Na Gaya Ho",
+        body: `Ek lambi saans lo Divya. Agar aaj ka din thoda exhausting ya kharab gaya hai, toh yaad rakhna ki ek bura din tumhari value kam nahi kar sakta.<br/><br/>
+        Tum bohot strong, pyari aur samajhdar ho. Apne comfortable kapde pehno, garma-garam chai ya coffee piyo, aur aaj raat sab kuch Nishant par chhod do. Sab thik ho jayega!`
+      },
+      3: {
+        badge: "KHAT #3 FROM NISHANT",
+        icon: "🎂",
+        title: "Tumhare Birthday Par",
+        body: `Happy Birthday Meri Pyaari Divya! 🥳🎉<br/><br/>
+        Aaj ka din sirf aur sirf tumhare liye hai. Nishant kitna lucky hai ki tum uski life mein ho. Naya saal tumhare liye dher saari khushiyan, success, hassi aur saare sapne poore kare. Love you so much Divya!`
+      },
+      4: {
+        badge: "KHAT #4 FROM NISHANT",
+        icon: "🌙",
+        title: "Jab Raat Ko Neend Na Aaye",
+        body: `Raat bohot ho gayi hai aur dimaag mein bohot saare thoughts chal rahe hain na Divya? Thoda relax karo aur lambi saans lo.<br/><br/>
+        Imagine karo hum dono saath mein cozy ho kar shaanti se baithe hain. Tum safe ho, bohot pyari ho, aur kal ek naya pyaara din hoga. Tension mat lo, ab aaram se so jao Divya.`
+      },
+      5: {
+        badge: "KHAT #5 FROM NISHANT",
+        icon: "✨",
+        title: "Jab Confidence Chahiye Ho",
+        body: `Agar tum bhool gayi ho toh Nishant yaad dila de Divya: Tum bohot smart, talented aur strong ho! Jitna tum sochti ho usse kahin zyada capable ho.<br/><br/>
+        Apne aap par kabhi doubt mat karna. Poore confidence ke saath aage badho—Nishant humesha tumhara sabse bada supporter hai!`
+      },
+      6: {
+        badge: "KHAT #6 FROM NISHANT",
+        icon: "🤝",
+        title: "Jab Hamari Ladai Ho Jaaye",
+        body: `Bas 2 minute ke liye ruko aur socho Divya. Chhoti-moti ladaiyan toh hoti rehti hain, lekin Nishant ka pyaar iss kisi bhi ladai se bohot bohot bada hai.<br/><br/>
+        Hum dono ek hi team mein hain (Tum + Main vs Problem). Nishant tumse bohot pyaar karta hai, mujhe maaf kar do, aur main tumhe tight hug karne ke liye ready hoon.`
+      }
+    };
+
+    const letterModal = document.getElementById('letterModal');
+
+    function openLetter(id) {
+      const data = lettersData[id];
+      if (!data) return;
+
+      document.getElementById('modalBadge').textContent = data.badge;
+      document.getElementById('modalIcon').textContent = data.icon;
+      document.getElementById('modalTitle').textContent = data.title;
+      document.getElementById('modalBody').innerHTML = data.body;
+
+      letterModal.showModal();
+    }
+
+    function closeLetterModal() {
+      letterModal.close();
+    }
+
+    function copyLetterText() {
+      const title = document.getElementById('modalTitle').textContent;
+      const body = document.getElementById('modalBody').innerText;
+      const textToCopy = `${title}\n\n${body}\n\nForever & Always Yours, Nishant ❤️`;
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
+        alert('Khat copy ho gaya hai Divya ke liye! 📋');
+      });
+    }
+
+    // Close modal on backdrop click
+    letterModal.addEventListener('click', (e) => {
+      const dialogBounds = letterModal.getBoundingClientRect();
+      if (
+        e.clientX < dialogBounds.left ||
+        e.clientX > dialogBounds.right ||
+        e.clientY < dialogBounds.top ||
+        e.clientY > dialogBounds.bottom
+      ) {
+        letterModal.close();
+      }
+    });
+
+
+    // 5. BOLLYWOOD FULL SONGS DATA WITH LOCAL HIGH-QUALITY MP3 FILES
+    const tracksList = [
+      {
+        id: 1,
+        title: "Kesariya 🧡",
+        artist: "Arijit Singh, Pritam • Brahmāstra",
+        art: "assets/polaroid_sunset.jpg",
+        audioSrc: "assets/kesariya.mp3",
+        youtube: "https://www.youtube.com/watch?v=BddP6PYo2gs",
+        spotify: "https://open.spotify.com/search/Kesariya%20Arijit%20Singh"
+      },
+      {
+        id: 2,
+        title: "Apna Bana Le ✨",
+        artist: "Arijit Singh, Sachin-Jigar • Bhediya",
+        art: "assets/polaroid_stargazing.jpg",
+        audioSrc: "assets/apna_bana_le.mp3",
+        youtube: "https://www.youtube.com/watch?v=1xV2v9TzP00",
+        spotify: "https://open.spotify.com/search/Apna%20Bana%20Le%20Arijit%20Singh"
+      },
+      {
+        id: 3,
+        title: "Raataan Lambiyan 🌙",
+        artist: "Jubin Nautiyal, Asees Kaur • Shershaah",
+        art: "assets/polaroid_coffee.jpg",
+        audioSrc: "assets/raataan_lambiyan.mp3",
+        youtube: "https://www.youtube.com/watch?v=gZrWiDPQR_g",
+        spotify: "https://open.spotify.com/search/Raataan%20Lambiyan"
+      },
+      {
+        id: 4,
+        title: "Tum Se Hi ❤️",
+        artist: "Mohit Chauhan, Pritam • Jab We Met",
+        art: "assets/polaroid_sunset.jpg",
+        audioSrc: "assets/tum_se_hi.mp3",
+        youtube: "https://www.youtube.com/watch?v=kYy31p5sU9U",
+        spotify: "https://open.spotify.com/search/Tum%20Se%20Hi%20Mohit%20Chauhan"
+      }
+    ];
+
+    let currentTrackIndex = 0;
+    const playerAudio = new Audio();
+    playerAudio.volume = 0.8;
+
+    function toggleStory(trackId) {
+      const storyEl = document.getElementById(`story-${trackId}`);
+      const chevronEl = document.getElementById(`chevron-${trackId}`);
+
+      if (storyEl.classList.contains('hidden')) {
+        storyEl.classList.remove('hidden');
+        chevronEl.classList.add('rotate-180');
+      } else {
+        storyEl.classList.add('hidden');
+        chevronEl.classList.remove('rotate-180');
+      }
+
+      // Play track on clicking card header
+      playTrackIndex(trackId);
+    }
+
+    function updatePlayerUI(track, isPlaying) {
+      document.getElementById('playerSongTitle').textContent = track.title;
+      document.getElementById('playerArtist').textContent = track.artist;
+      document.getElementById('playerAlbumArt').src = track.art;
+
+      const mainIcon = document.getElementById('mainPlayIcon');
+      const vinyl = document.getElementById('vinylDisk');
+
+      if (isPlaying) {
+        mainIcon.className = 'fa-solid fa-pause text-lg';
+        vinyl.classList.add('spin-vinyl');
+      } else {
+        mainIcon.className = 'fa-solid fa-play text-lg ml-0.5';
+        vinyl.classList.remove('spin-vinyl');
+      }
+
+      // Update track list icons & card active borders
+      for (let i = 1; i <= 4; i++) {
+        const icon = document.getElementById(`trackIcon-${i}`);
+        const card = document.getElementById(`trackCard-${i}`);
+        if (i === track.id && isPlaying) {
+          icon.className = 'fa-solid fa-pause text-xs';
+          card.classList.add('border-rose-500/80');
+          card.classList.remove('border-white/10');
+        } else {
+          icon.className = 'fa-solid fa-play text-xs ml-0.5';
+          card.classList.remove('border-rose-500/80');
+          card.classList.add('border-white/10');
+        }
+      }
+    }
+
+    function playTrackIndex(id) {
+      const index = tracksList.findIndex(t => t.id === id);
+      if (index === -1) return;
+
+      // Stop top bar bg music if playing
+      if (bgAudio && !bgAudio.paused) {
+        bgAudio.pause();
+        isMusicPlaying = false;
+        document.getElementById('musicIcon').className = 'fa-solid fa-play text-rose-400';
+        document.getElementById('musicText').textContent = 'Ambient Music 🎵';
+      }
+
+      const track = tracksList[index];
+
+      // If clicking currently active track: toggle play/pause without resetting currentTime
+      if (currentTrackIndex === index && playerAudio.src && playerAudio.src.includes(track.audioSrc)) {
+        if (!playerAudio.paused) {
+          playerAudio.pause();
+          updatePlayerUI(track, false);
+          return;
+        } else {
+          playerAudio.play().then(() => {
+            updatePlayerUI(track, true);
+          }).catch(err => console.log('Playback error:', err));
+          return;
+        }
+      }
+
+      // If switching to a new track
+      currentTrackIndex = index;
+      playerAudio.src = track.audioSrc;
+      playerAudio.play().then(() => {
+        updatePlayerUI(track, true);
+      }).catch(err => {
+        console.log('Playback error:', err);
+        updatePlayerUI(track, false);
+      });
+    }
+
+    function toggleMainPlay() {
+      const currentTrack = tracksList[currentTrackIndex];
+      if (!playerAudio.src || !playerAudio.src.includes(currentTrack.audioSrc)) {
+        playTrackIndex(currentTrack.id);
+      } else if (playerAudio.paused) {
+        if (bgAudio && !bgAudio.paused) {
+          bgAudio.pause();
+          isMusicPlaying = false;
+          document.getElementById('musicIcon').className = 'fa-solid fa-play text-rose-400';
+          document.getElementById('musicText').textContent = 'Ambient Music 🎵';
+        }
+        playerAudio.play().then(() => {
+          updatePlayerUI(currentTrack, true);
+        });
+      } else {
+        playerAudio.pause();
+        updatePlayerUI(currentTrack, false);
+      }
+    }
+
+    function nextTrack() {
+      const nextIdx = (currentTrackIndex + 1) % tracksList.length;
+      playTrackIndex(tracksList[nextIdx].id);
+    }
+
+    function prevTrack() {
+      const prevIdx = (currentTrackIndex - 1 + tracksList.length) % tracksList.length;
+      playTrackIndex(tracksList[prevIdx].id);
+    }
+
+    function rewind10() {
+      if (playerAudio) {
+        const cur = playerAudio.currentTime || 0;
+        playerAudio.currentTime = Math.max(0, cur - 10);
+      }
+    }
+
+    function forward10() {
+      if (playerAudio) {
+        const cur = playerAudio.currentTime || 0;
+        const dur = playerAudio.duration || 300;
+        playerAudio.currentTime = Math.min(dur, cur + 10);
+      }
+    }
+
+    // Audio Progress Update & Seek Slider Sync
+    const seekSlider = document.getElementById('seekSlider');
+    let isUserSeeking = false;
+
+    playerAudio.addEventListener('timeupdate', () => {
+      if (!isNaN(playerAudio.duration) && !isUserSeeking) {
+        const percent = (playerAudio.currentTime / playerAudio.duration) * 100;
+        seekSlider.value = percent;
+
+        const curMin = Math.floor(playerAudio.currentTime / 60);
+        const curSec = Math.floor(playerAudio.currentTime % 60);
+        document.getElementById('currentTimeText').textContent = `${curMin}:${String(curSec).padStart(2, '0')}`;
+
+        const durMin = Math.floor(playerAudio.duration / 60);
+        const durSec = Math.floor(playerAudio.duration % 60);
+        document.getElementById('durationText').textContent = `${durMin}:${String(durSec).padStart(2, '0')}`;
+      }
+    });
+
+    // Seek Slider Event Listeners (Dragging & Clicking)
+    seekSlider.addEventListener('mousedown', () => { isUserSeeking = true; });
+    seekSlider.addEventListener('touchstart', () => { isUserSeeking = true; });
+
+    seekSlider.addEventListener('input', () => {
+      if (!isNaN(playerAudio.duration)) {
+        const targetTime = (seekSlider.value / 100) * playerAudio.duration;
+        const curMin = Math.floor(targetTime / 60);
+        const curSec = Math.floor(targetTime % 60);
+        document.getElementById('currentTimeText').textContent = `${curMin}:${String(curSec).padStart(2, '0')}`;
+      }
+    });
+
+    seekSlider.addEventListener('change', () => {
+      if (!isNaN(playerAudio.duration)) {
+        playerAudio.currentTime = (seekSlider.value / 100) * playerAudio.duration;
+      }
+      isUserSeeking = false;
+    });
+
+    playerAudio.addEventListener('ended', () => {
+      nextTrack();
+    });
+
+
+    // 6. MOBILE MENU DRAWER TOGGLE
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileDrawer.classList.toggle('hidden');
+    });
+
+    mobileNavLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileDrawer.classList.add('hidden');
+      });
+    });
+
+
+    // 7. SURPRISE SPARKLE BUTTON & BACKGROUND AUDIO PLAYER
+    document.getElementById('surpriseBtn').addEventListener('click', () => {
+      for (let i = 0; i < 30; i++) {
+        const p = new Particle();
+        p.x = window.innerWidth / 2 + (Math.random() - 0.5) * 200;
+        p.y = window.innerHeight / 3 + (Math.random() - 0.5) * 100;
+        p.speedY = Math.random() * -3 - 1;
+        p.speedX = (Math.random() - 0.5) * 4;
+        p.isHeart = true;
+        p.opacity = 1;
+        particles.push(p);
+      }
+      alert('✨ Nishant ki taraf se Divya ke liye bohot saara pyaar aur tight hug! 💖');
+    });
+
+    // Top Navigation Bar Ambient Music
+    let isMusicPlaying = false;
+    const bgAudio = new Audio('https://cdn.pixabay.com/download/audio/2022/03/15/audio_c8c8a99478.mp3?filename=romantic-acoustic-guitar-10332.mp3');
+    bgAudio.loop = true;
+    bgAudio.volume = 0.5;
+
+    document.getElementById('bgMusicToggle').addEventListener('click', () => {
+      const icon = document.getElementById('musicIcon');
+      const text = document.getElementById('musicText');
+
+      // Stop playlist player if active
+      if (playerAudio && !playerAudio.paused) {
+        playerAudio.pause();
+        updatePlayerUI(tracksList[currentTrackIndex], false);
+      }
+
+      if (!isMusicPlaying) {
+        bgAudio.play().then(() => {
+          isMusicPlaying = true;
+          icon.className = 'fa-solid fa-pause text-rose-400';
+          text.textContent = 'Pause Music 🎵';
+        }).catch(err => {
+          console.log('Audio playback prevented by browser policy', err);
+          alert('Page par kahin bhi ek baar click karke music chalu karo!');
+        });
+      } else {
+        bgAudio.pause();
+        isMusicPlaying = false;
+        icon.className = 'fa-solid fa-play text-rose-400';
+        text.textContent = 'Ambient Music 🎵';
+      }
+    });
+  </script>
+</body>
+</html>
