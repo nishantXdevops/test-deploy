@@ -866,8 +866,8 @@
 
           <!-- SONG INFO -->
           <div class="text-center mb-6">
-            <h3 id="playerSongTitle" class="font-serif text-2xl font-bold text-white mb-1">Kesariya 🧡</h3>
-            <p id="playerArtist" class="text-xs text-rose-300 font-medium">Arijit Singh, Pritam • Brahmāstra</p>
+            <h3 id="playerSongTitle" class="font-serif text-2xl font-bold text-white mb-1">Main Hoon Na ❤️</h3>
+            <p id="playerArtist" class="text-xs text-rose-300 font-medium">Sonu Nigam, Shreya Ghoshal • Main Hoon Na</p>
           </div>
 
           <!-- AUDIO PROGRESS BAR WITH SEEK SLIDER -->
@@ -1128,22 +1128,22 @@
       reset() {
         this.x = Math.random() * canvas.width;
         this.y = canvas.height + Math.random() * 100;
-        this.size = Math.random() * 3 + 1;
+        this.size = Math.random() * 4 + 2.5;
         this.speedY = Math.random() * 0.8 + 0.3;
         this.speedX = (Math.random() - 0.5) * 0.4;
-        this.opacity = Math.random() * 0.5 + 0.2;
-        this.isHeart = Math.random() > 0.6;
+        this.opacity = Math.random() * 0.5 + 0.25;
+        this.isHeart = Math.random() > 0.5;
         this.color = Math.random() > 0.5 ? 'rgba(244, 63, 94, ' : 'rgba(224, 169, 109, ';
       }
       update() {
         this.y -= this.speedY;
         this.x += this.speedX;
-        if (this.y < -20) this.reset();
+        if (this.y < -30) this.reset();
       }
       draw() {
         ctx.fillStyle = this.color + this.opacity + ')';
         if (this.isHeart) {
-          ctx.font = `${this.size * 3.5}px sans-serif`;
+          ctx.font = `${this.size * 5.5}px sans-serif`;
           ctx.fillText('♥', this.x, this.y);
         } else {
           ctx.beginPath();
@@ -1570,23 +1570,36 @@
       // Do not play if Bollywood playlist track is playing
       if (playerAudio && !playerAudio.paused) return;
 
+      // Start 25s in where the acoustic melody vibe kicks in
+      if (bgAudio.currentTime < 25) {
+        bgAudio.currentTime = 25;
+      }
+
       bgAudio.play().then(() => {
         isMusicPlaying = true;
         document.getElementById('musicIcon').className = 'fa-solid fa-pause text-rose-400';
         document.getElementById('musicText').textContent = 'Pause Music 🎵';
       }).catch(err => {
-        console.log('Background music waiting for user gesture:', err);
+        console.log('Background music waiting for browser gesture:', err);
       });
     }
 
-    // Auto-start light background music on first user click/tap anywhere on page
+    // 1. Attempt immediate playback when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', startBgMusic);
+    } else {
+      startBgMusic();
+    }
+
+    // 2. Comprehensive fallback for browsers that block un-gestured autoplay
+    const autoPlayEvents = ['click', 'touchstart', 'scroll', 'mousemove', 'keydown'];
     const autoPlayHandler = () => {
       startBgMusic();
-      window.removeEventListener('click', autoPlayHandler);
-      window.removeEventListener('touchstart', autoPlayHandler);
+      if (isMusicPlaying) {
+        autoPlayEvents.forEach(evt => window.removeEventListener(evt, autoPlayHandler));
+      }
     };
-    window.addEventListener('click', autoPlayHandler);
-    window.addEventListener('touchstart', autoPlayHandler);
+    autoPlayEvents.forEach(evt => window.addEventListener(evt, autoPlayHandler, { passive: true }));
 
     // Top Navigation Bar Ambient Music Toggle Button
     document.getElementById('bgMusicToggle').addEventListener('click', (e) => {
@@ -1601,6 +1614,9 @@
       }
 
       if (!isMusicPlaying) {
+        if (bgAudio.currentTime < 10) {
+          bgAudio.currentTime = 10;
+        }
         bgAudio.play().then(() => {
           isMusicPlaying = true;
           icon.className = 'fa-solid fa-pause text-rose-400';
